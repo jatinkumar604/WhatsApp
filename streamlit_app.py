@@ -1,6 +1,7 @@
 import streamlit as st
-import preprocessor,helper
-import matplotlib as plt
+import preprocessor, helper
+import matplotlib.pyplot as plt  # Updated import
+
 st.sidebar.title("Whatsapp Chat Analyzer")
 
 uploaded_file = st.sidebar.file_uploader("Choose a file")
@@ -11,18 +12,15 @@ if uploaded_file is not None:
     df = preprocessor.preprocess(data)
     st.dataframe(df)
 
-
-
-
     user_list = df['user'].unique().tolist()
     user_list.remove('group_notification')
     user_list.sort()
-    user_list.insert(0,"Overall")
-    selected_user = st.sidebar.selectbox("Show analysis wrt",user_list)
+    user_list.insert(0, "Overall")
+    selected_user = st.sidebar.selectbox("Show analysis wrt", user_list)
 
     if st.sidebar.button("Show Analysis"):
-        num_messages , words , media_msg , link_ms = helper.fetch_stats(selected_user,df)
-        col1,col2,col3,col4 = st.columns(4)
+        num_messages, words, media_msg, link_ms = helper.fetch_stats(selected_user, df)
+        col1, col2, col3, col4 = st.columns(4)
         with col1:
             st.header("Total Messages")
             st.title(num_messages)
@@ -35,15 +33,14 @@ if uploaded_file is not None:
         with col4:
             st.header("Total Links Shared")
             st.title(link_ms)
-    # finding the busiest users in the group(Group level)
+
+    # Finding the busiest users in the group (Group level)
     if selected_user == 'Overall':
         st.title('Most Busy Users')
         x = helper.most_busy_users(df)
-        fig , ax = plt.subplots()
-        col1 , col2 = st.columns(2)
+        fig, ax = plt.subplots()  # Updated code
+        col1, col2 = st.columns(2)
 
         with col1:
             ax.bar(x.index, x.values)
             st.pyplot(fig)
-
-
