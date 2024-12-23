@@ -39,7 +39,7 @@ if uploaded_file is not None:
     if selected_user == 'Overall':
         st.title('Most Busy Users')
         x = helper.most_busy_users(df)
-        fig , ax = plt.subplot()
+        fig , ax = plt.subplots()
         col1 , col2 = st.columns(2)
 
         with col1:
